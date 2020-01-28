@@ -32,10 +32,16 @@
 # Example to usage of unm3driver:
 #
 # from unm3driver import Nm3
-# from pyb import UART
-# uart = uart = UART(1, 9600)
+# from machine import UART
+#
+# Instantiate UART
+# uart = UART(1, 9600)
 # uart.init(9600, bits=8, parity=None, stop=1, timeout=50, flow=0, timeout_char=0, read_buf_len=64)
+#
+# Instantiate NM3
 # nm = Nm3(uart)
+#
+# Examples of using Nanomodem
 # nm.get_address()
 # nm.set_address(160)
 # nm.get_battery_voltage()
@@ -270,16 +276,14 @@ class MessagePacketParser:
         return packet
 
 
-
 class Nm3:
     """NM3 Driver over UART."""
 
-    def __init__(self,
-                 uart: machine.UART):
+    def __init__(self, uart: machine.UART):
         """Constructor. 
            """
         self._uart = uart
-        self._incoming_bytes_buffer = deque((), 300) # List/Deque of integers
+        self._incoming_bytes_buffer = deque((), 300)  # List/Deque of integers
         self._received_packet_parser = MessagePacketParser()
         #self._received_packets = deque()
 
