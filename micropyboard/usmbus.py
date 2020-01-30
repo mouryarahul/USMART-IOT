@@ -31,8 +31,6 @@
 #
 """MicroPython Wrapper for the CPython smbus over I2C."""
 
-import ustruct
-
 
 class SMBus:
     """
