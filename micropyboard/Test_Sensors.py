@@ -49,7 +49,7 @@ def main():
     # Initialize Pressure Sensor for reading
     ms5837.init()
     sleep(0.5)
-    for i in range(10):
+    for i in range(50):
         tsys01.read()
         sleep(0.5)
         ms5837.read()
@@ -59,17 +59,6 @@ def main():
         print("Temperature in Centrigrade from TSYS01: {:0.4f} and from MS5837: {:0.4f}".format(temperature_1, temperature_2))
         print("Pressure in mBar from MS5837: {:0.4f}".format(pressure))
         sleep(0.5)
-
-    for i in range(2):
-        print("Blinking the LEDs...")
-        LED(1).toggle()
-        sleep(1.0)
-        print("Blinking the LEDs...")
-        LED(2).toggle()
-        sleep(1.0)
-        print("Blinking the LEDs...")
-        LED(3).toggle()
-        sleep(1.0)
 
 
 if __name__ == '__main__':
