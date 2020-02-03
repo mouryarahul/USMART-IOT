@@ -290,7 +290,6 @@ class Nm3:
     def __call__(self):
         return self
 
-
     def get_address(self) -> int:
         """Gets the NM3 Address (000-255)."""
 
@@ -326,7 +325,6 @@ class Nm3:
         addr_int = int(addr_string)
 
         return addr_int
-
 
     def set_address(self,
                     address: int) -> int:
@@ -370,7 +368,6 @@ class Nm3:
 
         return addr_int
 
-
     def get_battery_voltage(self) -> float:
         """Gets the NM3 Battery Voltage."""
 
@@ -408,7 +405,6 @@ class Nm3:
         voltage = float(adc_int) * 15.0 / 65536.0
 
         return voltage
-
 
     def send_ping(self,
                   address: int,
@@ -451,7 +447,6 @@ class Nm3:
                   ' expected=' + str(len(resp_string)))
             return -1
 
-
         # Set the temporary read timeout for the propagation delay
         #self._serial_port.timeout = timeout
         start_ms = utime.ticks_ms()
@@ -488,7 +483,6 @@ class Nm3:
 
         return time
 
-
     def send_broadcast_message(self,
                                message_bytes: bytes) -> int:
         """Sends a broadcast message of message_bytes. Maximum of 64 bytes.
@@ -524,9 +518,7 @@ class Nm3:
                   ' expected=' + str(len(resp_string)))
             return -1
 
-
         return len(message_bytes)
-
 
     def send_unicast_message(self,
                              address: int,
@@ -571,7 +563,6 @@ class Nm3:
         # If the address is invalid then returns 'E\r\n'
 
         return len(message_bytes)
-
 
     def send_unicast_message_with_ack(self,
                                       address: int,
@@ -656,7 +647,6 @@ class Nm3:
 
         return time
 
-
     def poll_receiver(self):
         """Check the serial port and place bytes into incoming buffer for processing.
         """
@@ -667,11 +657,10 @@ class Nm3:
             self._incoming_bytes_buffer.append(a_byte)
 
         #return
-		
+
     def poll_receiver_blocking(self):
         """Check the serial port and place bytes into incoming buffer for processing.
-		   Blocking on serial port read until bytes received or timeout. 
-        """
+        Blocking on serial port read until bytes received or timeout."""
 
         # First byte is blocking
         some_bytes = self._uart.read(1) # Read one byte blocking until timeout
@@ -685,7 +674,6 @@ class Nm3:
             self._incoming_bytes_buffer.append(a_byte)
 
         #return
-
 
     def process_incoming_buffer(self,
                                 max_bytes_count: int = 0) -> int:
@@ -702,15 +690,12 @@ class Nm3:
             if max_bytes_count > 0 and byte_count >= max_bytes_count:
                 return len(self._incoming_bytes_buffer)
 
-
         return len(self._incoming_bytes_buffer)
-
 
     def has_received_packet(self) -> bool:
         """Has received packet in the queue."""
 
         return self._received_packet_parser.has_packet()
-
 
     def get_received_packet(self) -> MessagePacket:
         """Gets the next received packet or None if the queue is empty.
