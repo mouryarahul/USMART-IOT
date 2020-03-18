@@ -72,10 +72,8 @@ class MessagePacket:
         self._packet_type = None
         self._packet_payload = None
 
-
     def __call__(self):
         return self
-
 
     @property
     def source_address(self) -> int:
@@ -89,7 +87,6 @@ class MessagePacket:
         if source_address and (source_address < 0 or source_address > 255):
             raise ValueError('Invalid Address Value (0-255): {!r}'.format(source_address))
         self._source_address = source_address
-
 
     @property
     def destination_address(self) -> int:
@@ -159,7 +156,6 @@ class MessagePacketParser:
     def __call__(self):
         return self
 
-
     def reset(self):
         """Resets the parser state machine."""
 
@@ -167,7 +163,6 @@ class MessagePacketParser:
         self._current_message_packet = None
         self._current_byte_counter = 0
         self._current_integer = 0
-
 
     def process(self, next_byte) -> bool:
         """Process the next byte. Returns True if a packet completes on this byte."""
@@ -254,7 +249,6 @@ class MessagePacketParser:
 
         return return_flag
 
-
     def has_packet(self) -> bool:
         """Has packets in the queue."""
 
@@ -262,7 +256,6 @@ class MessagePacketParser:
             return True
 
         return False
-
 
     def get_packet(self) -> MessagePacket:
         """Gets the next received packet or None if the queue is empty.

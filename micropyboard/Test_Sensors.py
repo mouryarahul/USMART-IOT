@@ -7,6 +7,18 @@ from ums5837 import MS5837
 
 
 def main():
+    # Switch ON 3.3V external LDO
+    p33v_2 = Pin('Y5', mode=Pin.OPEN_DRAIN, pull=None, value=1)
+    sleep(3.0)
+
+    # Instantiate LEDs
+    led_R = LED(1)
+    led_G = LED(2)
+    led_B = LED(3)
+    led_R.off()
+    led_G.off()
+    led_B.off()
+
     # Intialize I2C Bus X
     Pin('PULL_SCL', Pin.OUT, value=1)  # enable 5.6kOhm X9/SCL pull-up
     Pin('PULL_SDA', Pin.OUT, value=1)  # enable 5.6kOhm X10/SDA pull-up
@@ -45,20 +57,28 @@ def main():
 
     # Initialize Temperature Sensor for reading
     tsys01.init()
-    sleep(0.5)
+    sleep(0.125)
     # Initialize Pressure Sensor for reading
     ms5837.init()
-    sleep(0.5)
-    for i in range(50):
+    sleep(0.125)
+    for i in range(20):
+        led_R.on()
         tsys01.read()
         sleep(0.5)
+        led_R.off()
+        led_G.on()
         ms5837.read()
+        sleep(0.5)
+        led_G.off()
         temperature_1 = tsys01.temperature()
         pressure = ms5837.pressure()
         temperature_2 = ms5837.temperature()
         print("Temperature in Centrigrade from TSYS01: {:0.4f} and from MS5837: {:0.4f}".format(temperature_1, temperature_2))
         print("Pressure in mBar from MS5837: {:0.4f}".format(pressure))
-        sleep(0.5)
+
+
+    # Switch OFF 3.3V external LDO
+    p33v_2.value(0)
 
 
 if __name__ == '__main__':
