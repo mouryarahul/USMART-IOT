@@ -76,7 +76,6 @@ def main():
         print("Temperature in Centrigrade from TSYS01: {:0.4f} and from MS5837: {:0.4f}".format(temperature_1, temperature_2))
         print("Pressure in mBar from MS5837: {:0.4f}".format(pressure))
 
-
     # Switch OFF 3.3V external LDO
     p33v_2.value(0)
 

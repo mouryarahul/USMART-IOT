@@ -11,10 +11,8 @@ micropython.alloc_emergency_exception_buf(100)
 
 SOUND_SPEED = 320.0  # m/s
 
-# Global Variable
+# Global Variables
 arrival_bflag = False
-current_arrival_tick = 0
-#previous_arrival_tick = 0
 
 
 def rxs_callback(line):
@@ -24,14 +22,14 @@ def rxs_callback(line):
 
 
 # Switch ON 3.3V to TTL-RS232 converter
-p33V = Pin('EN_3V3', mode=Pin.OUT, pull=Pin.PULL_UP, value=1)
+p33v_1 = Pin('EN_3V3', mode=Pin.OUT, pull=Pin.PULL_UP, value=1)
 
 # Initialize UART
-uart = UART(1, 9600)
-uart.init(9600, bits=8, parity=None, stop=1, timeout=50, flow=0, timeout_char=0, read_buf_len=64)
+uart1 = UART(1, 9600)
+uart1.init(9600, bits=8, parity=None, stop=1, timeout=50, flow=0, timeout_char=0, read_buf_len=64)
 
 # Instantiate Nm3
-nm3 = Nm3(uart)
+nm3 = Nm3(uart1)
 
 addr = nm3.get_address()
 print('Get Address=' + '{:03d}'.format(addr))
@@ -56,7 +54,6 @@ utime.sleep(1.0)
 # Configure I/O pin "Y3" as an external interrupt connected to RxS pin of Nanomodem
 # Rising Edge on RxS pin indicate start of incoming packet on Nanomodem.
 extint = pyb.ExtInt('Y3', pyb.ExtInt.IRQ_RISING, pyb.Pin.PULL_DOWN, rxs_callback)
-print(extint)
 
 # Global Variable
 current_arrival_tick = utime.ticks_us()
