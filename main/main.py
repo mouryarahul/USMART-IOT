@@ -46,7 +46,7 @@ def load_wifi_config():
     '''Load Wifi Configuration from JSON file.
     '''
     wifi_config = None
-    config_filename = 'config/wifi_cfg.json'
+    config_filename = 'config/wifi_cfg_private.json'
     try:
         with open(config_filename) as json_config_file:
             wifi_config = json.load(json_config_file)
