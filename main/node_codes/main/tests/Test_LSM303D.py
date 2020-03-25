@@ -39,7 +39,7 @@ def main():
     if lsm303:
         x_p, y_p, z_p = lsm303.accelerometer()
         mx_p, my_p, mz_p = lsm303.magnetometer()
-        for i in range(20):
+        for i in range(10):
             led_R.on()
             x_c, y_c, z_c = lsm303.accelerometer()
             #print("Current Acceleration: {:+06.2f}g : {:+06.2f}g : {:+06.2f}g".format(x_c, y_c, z_c))

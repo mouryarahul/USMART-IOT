@@ -9,10 +9,12 @@ from unm3driver import Nm3
 
 micropython.alloc_emergency_exception_buf(100)
 
+# Global Constant
 SOUND_SPEED = 320.0  # m/s
 
 # Global Variables
 arrival_bflag = False
+current_arrival_tick = 0
 
 
 def rxs_callback(line):
@@ -23,6 +25,9 @@ def rxs_callback(line):
 
 # Switch ON 3.3V to TTL-RS232 converter
 p33v_1 = Pin('EN_3V3', mode=Pin.OUT, pull=Pin.PULL_UP, value=1)
+
+# Wait until the LDO stabilizes the output voltage
+utime.sleep(3.0)
 
 # Initialize UART
 uart1 = UART(1, 9600)
@@ -38,15 +43,9 @@ voltage = nm3.get_battery_voltage()
 print('Battery Voltage=' + '{:.2f}'.format(voltage) + 'V')
 
 # Ping a node
-tof = nm3.send_ping(178)
+tof = nm3.send_ping(170)
 distance = tof*SOUND_SPEED
 print('Time of Flight to ' '{:03d}'.format(addr) + ' = ' + '{:.4f}'.format(tof) + 's' + ' distance = ' + '{:.4f}'.format(distance) + 'm')
-
-"""
-broadcast_message = 'Hello World Hello World Hello World Hello World!'
-sent_bytes_count = nm3.send_broadcast_message(broadcast_message.encode('utf-8'))
-print('Sent Broadcast Message of ' + str(sent_bytes_count) + ' bytes')
-"""
 
 # Need a pause between transmissions for the modem to finish the last one
 utime.sleep(1.0)
@@ -56,8 +55,7 @@ utime.sleep(1.0)
 extint = pyb.ExtInt('Y3', pyb.ExtInt.IRQ_RISING, pyb.Pin.PULL_DOWN, rxs_callback)
 
 # Global Variable
-current_arrival_tick = utime.ticks_us()
-previous_arrival_tick = current_arrival_tick
+previous_arrival_tick = utime.ticks_us()
 
 # Receiving unicast and broadcast messages
 while True:
@@ -83,9 +81,7 @@ while True:
 
             print('Received a message packet: ' + MessagePacket.PACKETTYPE_NAMES[message_packet.packet_type] +
                   ' src: ' + str(message_packet.source_address) + ' data: ' + payload_as_string)
-            print("Time elapsed since previous packet: {:04f}".format(time_elapsed/1E6))
-
-
+            print("Time elapsed in ms since previous packet: {:04f}".format(time_elapsed/1E3))
 
     # Pause for a while before checking for new message
     utime.sleep(0.125)
